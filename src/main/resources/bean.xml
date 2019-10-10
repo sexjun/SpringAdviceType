@@ -12,15 +12,23 @@
 
         <!--        3、使用aop:aspect标签表明配置切面-->
         <aop:aspect id="logAdvice" ref="logger">
+            <!-- 配置切入点表达式 id属性用于指定表达式的唯一标识。expression属性用于指定表达式内容
+              此标签写在aop:aspect标签内部只能当前切面使用。
+              它还可以写在aop:aspect外面，此时就变成了所有切面可用
+          -->
+            <!--           配置切入点表达式-->
+            <aop:pointcut id="ponintCut" expression="execution(* club.lunarcat.service.impl.*.*())"></aop:pointcut>
 
             <!--            前置通知 : 切入点方法执行前通知-->
-            <aop:before method="printLog" pointcut="execution(* club.lunarcat.service.impl.*.*())"></aop:before>
+            <aop:before method="beforePrintLog" pointcut-ref="ponintCut"></aop:before>
             <!--            后置通知：切入点方法执行后通知 和异常通知互斥不共存-->
-            <aop:after method="afterReturningPrintLog" pointcut="execution(* club.lunarcat.service.impl.*.*())"></aop:after>
+            <aop:after method="afterReturningPrintLog" pointcut-ref="ponintCut"></aop:after>
             <!--            异常通知：在切入点方法产生异常之后执行 和后置通知互斥不共存-->
-            <aop:after-throwing method="afterThrowingPrintLog" pointcut="execution(* club.lunarcat.service.impl.*.*())"></aop:after-throwing>
+            <aop:after-throwing method="afterThrowingPrintLog" pointcut-ref="ponintCut"></aop:after-throwing>
             <!--            最终通知：无论切入点是否正常执行都会通知-->
-            <aop:after method="afterPrintLog" pointcut="execution(* club.lunarcat.service.impl.*.*())"></aop:after>
+            <aop:after method="afterPrintLog" pointcut-ref="ponintCut"></aop:after>
+            <!--            配置环绕通知 详细的注释请看Logger类中-->
+            <aop:around method="arountPrintLog" pointcut-ref="ponintCut"></aop:around>
         </aop:aspect>
     </aop:config>
 </beans>
